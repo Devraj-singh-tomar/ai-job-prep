@@ -1,5 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ComponentProps } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export function UserAvatar({
   user,

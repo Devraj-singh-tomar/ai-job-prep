@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { db } from "@/drizzle/db";
 import { JobInfoTable } from "@/drizzle/schema";
+import { JobInfoForm } from "@/features/jobInfos/components/JobInfoForm";
 import { getJobInfoUserTag } from "@/features/jobInfos/dbCache";
-import { getJobInfoTag } from "@/lib/dataCache";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
 import { desc, eq } from "drizzle-orm";
 import { Loader2Icon } from "lucide-react";
@@ -33,6 +33,8 @@ async function JobInfos() {
   if (jobInfos.length === 0) {
     return <NoJobInfos />;
   }
+
+  return null;
 }
 
 function NoJobInfos() {
@@ -51,7 +53,9 @@ function NoJobInfos() {
       </p>
 
       <Card>
-        <CardContent>{/* <JobInfoForm /> */}</CardContent>
+        <CardContent>
+          <JobInfoForm />
+        </CardContent>
       </Card>
     </div>
   );
