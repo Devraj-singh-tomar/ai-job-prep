@@ -1,17 +1,18 @@
 "use server";
 
+import { env } from "@/data/env/server";
+import { db } from "@/drizzle/db";
+import { InterviewTable, JobInfoTable } from "@/drizzle/schema";
+import { PLAN_LIMIT_MESSAGE, RATE_LIMIT_MESSAGE } from "@/lib/errorToast";
+import { generateAiInterviewFeedback } from "@/services/ai/interview";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
+import arcjet, { request, tokenBucket } from "@arcjet/next";
+import { and, eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getJobInfoIdTag } from "../jobInfos/dbCache";
-import { InterviewTable, JobInfoTable } from "@/drizzle/schema";
-import { and, eq } from "drizzle-orm";
-import { db } from "@/drizzle/db";
 import { insertInterview, updateInterview as updateInterviewDb } from "./db";
 import { getInterviewIdTag } from "./dbCache";
 import { canCreateInterview } from "./permissions";
-import { PLAN_LIMIT_MESSAGE, RATE_LIMIT_MESSAGE } from "@/lib/errorToast";
-import arcjet, { request, tokenBucket } from "@arcjet/next";
-import { env } from "@/data/env/server";
 
 const aj = arcjet({
   characteristics: ["userId"],
@@ -153,4 +154,47 @@ async function getInterview(id: string, userId: string) {
   if (interview.jobInfo.userId !== userId) return null;
 
   return interview;
+}
+
+export async function generateInterviewFeedback(interviewId: string) {
+  const { userId, user } = await getCurrentUser({ allData: true });
+  if (userId == null || user == null) {
+    return {
+      error: true,
+      message: "You don't have permission to do this",
+    };
+  }
+
+  const interview = await getInterview(interviewId, userId);
+  if (interview == null) {
+    return {
+      error: true,
+      message: "You don't have permission to do this",
+    };
+  }
+
+  if (interview.humeChatId == null) {
+    return {
+      error: true,
+      message: "Interview has not been completed yet",
+    };
+  }
+
+  // AI feedback generation -------------------------
+  const feedback = await generateAiInterviewFeedback({
+    humeChatId: interview.humeChatId,
+    jobInfo: interview.jobInfo,
+    userName: user.name,
+  });
+
+  if (feedback == null) {
+    return {
+      error: true,
+      message: "Failed to generate feedback",
+    };
+  }
+
+  await updateInterviewDb(interviewId, { feedback });
+
+  return { error: false };
 }
