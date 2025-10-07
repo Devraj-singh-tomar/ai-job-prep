@@ -11,7 +11,7 @@ CREATE TABLE "users" (
 );
 --> statement-breakpoint
 CREATE TABLE "job_info" (
-	"id" uuid DEFAULT gen_random_uuid(),
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar,
 	"name" varchar NOT NULL,
 	"experienceLevel" "job_infos_experience_level" NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "job_info" (
 );
 --> statement-breakpoint
 CREATE TABLE "interviews" (
-	"id" uuid DEFAULT gen_random_uuid(),
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"jobInfoId" uuid NOT NULL,
 	"duration" varchar NOT NULL,
 	"humeChatId" varchar,
@@ -32,7 +32,7 @@ CREATE TABLE "interviews" (
 );
 --> statement-breakpoint
 CREATE TABLE "questions" (
-	"id" uuid DEFAULT gen_random_uuid(),
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"jobInfoId" uuid NOT NULL,
 	"text" varchar NOT NULL,
 	"difficulty" "questions_question_difficulty" NOT NULL,

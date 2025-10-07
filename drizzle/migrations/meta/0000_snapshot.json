@@ -1,5 +1,5 @@
 {
-  "id": "dff877ee-e18a-491a-ba03-c94cd321f7df",
+  "id": "88fbf5da-6565-4dcf-9280-dbd122965a47",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -70,8 +70,8 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "title": {
@@ -149,8 +149,8 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "jobInfoId": {
@@ -221,8 +221,8 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "jobInfoId": {
