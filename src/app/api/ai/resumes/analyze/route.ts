@@ -3,12 +3,16 @@ import { JobInfoTable } from "@/drizzle/schema";
 import { getJobInfoIdTag } from "@/features/jobInfos/dbCache";
 import { canRunResumeAnalysis } from "@/features/resumeAnalyses/permission";
 import { PLAN_LIMIT_MESSAGE } from "@/lib/errorToast";
+import { checkArcjet } from "@/middleware/arcJet";
 import { analyzeResumeForJob } from "@/services/ai/resumes/ai";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
 import { and, eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 
 export async function POST(req: Request) {
+  const response = await checkArcjet(req);
+  if (response) return response;
+
   const { userId } = await getCurrentUser();
 
   if (userId == null) {

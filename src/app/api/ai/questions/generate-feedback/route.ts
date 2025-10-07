@@ -2,6 +2,7 @@ import { db } from "@/drizzle/db";
 import { QuestionTable } from "@/drizzle/schema";
 import { getJobInfoIdTag } from "@/features/jobInfos/dbCache";
 import { getQuestionIdTag } from "@/features/questions/dbCache";
+import { checkArcjet } from "@/middleware/arcJet";
 import { generateAiQuestionFeedback } from "@/services/ai/question";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
 import { eq } from "drizzle-orm";
@@ -14,6 +15,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const response = await checkArcjet(req);
+  if (response) return response;
+
   const body = await req.json();
   const result = schema.safeParse(body);
 

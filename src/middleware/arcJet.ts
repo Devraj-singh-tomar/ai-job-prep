@@ -22,7 +22,7 @@ export async function checkArcjet(req: Request) {
   const decision = await aj.protect(req);
 
   if (decision.isDenied()) {
-    return new Response(null, { status: 403 });
+    return new Response("Forbidden", { status: 403 });
   }
 
   return null;

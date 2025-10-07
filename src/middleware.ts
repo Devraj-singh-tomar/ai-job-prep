@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { checkArcjet } from "./middleware/arcJet";
 
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
@@ -8,9 +7,6 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  const arcjetRes = await checkArcjet(req);
-  if (arcjetRes) return arcjetRes;
-
   if (!isPublicRoute(req)) {
     await auth.protect();
   }

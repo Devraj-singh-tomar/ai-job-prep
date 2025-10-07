@@ -1,9 +1,13 @@
 import { deleteUser, upsertUser } from "@/features/users/db";
+import { checkArcjet } from "@/middleware/arcJet";
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const res = await checkArcjet(request);
+    if (res) return res;
+
     const event = await verifyWebhook(request);
 
     switch (event.type) {

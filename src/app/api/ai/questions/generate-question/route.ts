@@ -9,6 +9,7 @@ import { insertQuestion } from "@/features/questions/db";
 import { getQuestionJobInfoTag } from "@/features/questions/dbCache";
 import { canCreateQuestion } from "@/features/questions/permissions";
 import { PLAN_LIMIT_MESSAGE } from "@/lib/errorToast";
+import { checkArcjet } from "@/middleware/arcJet";
 import { generateAiQuestion } from "@/services/ai/question";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
 import { createDataStreamResponse } from "ai";
@@ -22,6 +23,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const res = await checkArcjet(req);
+  if (res) return res;
+
   const body = await req.json();
   const result = schema.safeParse(body);
 
