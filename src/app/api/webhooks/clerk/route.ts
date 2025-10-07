@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
         break;
     }
-  } catch (error) {
+  } catch {
     return new Response("Invalid webhook", { status: 400 });
   }
 

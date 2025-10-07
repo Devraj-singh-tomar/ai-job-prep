@@ -1,10 +1,9 @@
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserAvatar } from "@/features/users/components/UserAvatar";
 import { PricingTable } from "@/services/clerk/components/PricingTable";
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 import {
   BookOpenCheckIcon,
   BrainCircuitIcon,

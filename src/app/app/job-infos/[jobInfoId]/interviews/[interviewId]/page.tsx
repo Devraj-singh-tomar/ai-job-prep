@@ -151,5 +151,7 @@ async function getInterview(id: string, userId: string) {
   if (interview == null) return null;
   cacheTag(getJobInfoIdTag(interview.jobInfo.id));
 
+  if (interview.jobInfo.userId !== userId) return null;
+
   return interview;
 }
